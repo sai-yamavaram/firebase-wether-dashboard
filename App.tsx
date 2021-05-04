@@ -1,18 +1,13 @@
-import Firebase from "./firebase/init";
 import React, {createContext, useState} from 'react';
 import StackNavigator from "./navigation/StackNavigator/Stacknavigator";
-export default function App() {
-    const UserContext = createContext(null);
-    const [user,setUser] = useState(null)
 
-    // @ts-ignore
-    const updateUser = (u)=>{
-        setUser(u);
-    }
+
+export const UserContext = createContext(null);
+
+export default function App() {
+
     return (
         // @ts-ignore
-        <UserContext.Provider value={{user, updateUser}}>
             <StackNavigator/>
-        </UserContext.Provider>
     );
 }

@@ -7,6 +7,7 @@ export type  InputProps = {
     mode?: "outlined" | "flat" | undefined,
     keyboard?: "default" | "email-address" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad" | "visible-password" | "ascii-capable" | "numbers-and-punctuation" | "url" | "name-phone-pad" | "twitter" | "web-search" | 'undefined',
     placeholder?: string,
+    updateUser?:(value: string, hasError: boolean)=>void,
     otherProps?: JSON | undefined,
 };
 
@@ -17,12 +18,13 @@ const CustomInput = ({
                          mode = "outlined",
                          keyboard = "default",
                          placeholder,
+                         updateContext,
                          ...otherProps
                      }: InputProps) => {
     const [input, setInput] = useState('');
     const inputRef = useRef(null);
     const errorRef = useRef(null);
-
+    const [hasError,setHasError] = useState(true);
     const styles = StyleSheet.create({
             input: {
                 height: 45,
@@ -53,14 +55,19 @@ const CustomInput = ({
                         if(text.length===0){
                             // @ts-ignore
                             inputRef.current.setNativeProps({style: {borderColor: "#6200ee"}});
+                            // @ts-ignore
+                            setHasError(true)
                         }
                         else if (!validateEmail(text)) {
                             // @ts-ignore
                             inputRef.current.setNativeProps({style: {borderColor: "red"}});
-
+                            // @ts-ignore
+                            setHasError(true)
                         } else {
                             // @ts-ignore
                             inputRef.current.setNativeProps({style: {borderColor: "green"}});
+                            // @ts-ignore
+                            setHasError(false)
 
                         }
 
@@ -73,6 +80,7 @@ const CustomInput = ({
                                 inputRef.current.setNativeProps({style: {borderColor: "#6200ee"}});
                                 // @ts-ignore
                                 errorRef.current.setNativeProps({style: {opacity: 0}});
+                                setHasError(true)
 
                             }
                             else if(!validatePassword(text)) {
@@ -80,15 +88,20 @@ const CustomInput = ({
                                 inputRef.current.setNativeProps({style: {borderColor: "red"}});
                                 // @ts-ignore
                                 errorRef.current.setNativeProps({style: {opacity: 1}});
+                                setHasError(true)
                             } else {
                                 // @ts-ignore
                                 inputRef.current.setNativeProps({style: {borderColor: "green"}});
                                 // @ts-ignore
                                 errorRef.current.setNativeProps({style: {opacity: 0}});
+                                setHasError(false)
 
                             }
                     }
                     setInput(text);
+                    if (updateContext) {
+                        updateContext(text,hasError)
+                    }
                 }}
                 placeholderTextColor="#dbcdf7"
                 value={input}
