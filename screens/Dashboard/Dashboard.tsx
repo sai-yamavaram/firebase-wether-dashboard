@@ -44,10 +44,10 @@ export default function Dashboard({navigation, route}) {
             <Image style={{resizeMode: "contain", position: "absolute"}}
                    source={require('../../assets/custom/snow.png')}/>
 
-            {(response === null) ? <ActivityIndicator animating={true} color={"white"} size={50}/> :
+            {(response === null) ? <ActivityIndicator style={{position:"absolute",top:height/2}} animating={true} color={"white"} size={50}/> :
                 (
                     <View style={{margin:10}}>
-                        <Text style={[styles.white,{position:"absolute",top:40, fontSize:30,fontWeight:"bold"}]}>
+                        <Text style={[styles.white,{position:"absolute",top:40, fontSize:30}]}>
                             Welcome {user}
                         </Text>
                         <Text style={[styles.white,{position:"absolute",top:80, fontSize:20,fontWeight:"bold"}]}>
