@@ -9,10 +9,13 @@ const {width,height} = Dimensions.get('window');
 
 // @ts-ignore
 export default function Dashboard({navigation, route}) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
     const {user} = route.params;
     console.log("dashboard user", user)
     const [response, setResponse] = useState(null);
-    const [time, setTime] = useState(new Date().toLocaleString())
+    const time  = new Date();
     useEffect(() => {
         try {
 
@@ -51,7 +54,10 @@ export default function Dashboard({navigation, route}) {
                             Welcome {user}
                         </Text>
                         <Text style={[styles.white,{position:"absolute",top:80, fontSize:20,fontWeight:"bold"}]}>
-                            {time}
+                            {time.getDate() +"th"} { monthNames[time.getMonth()]}, {time.getFullYear()}
+                        </Text>
+                        <Text style={[styles.white,{position:"absolute",top:110, fontSize:20,fontWeight:"bold"}]}>
+                            {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
                         </Text>
                         <Text style={[styles.white,{position:"absolute",top:height - 100, fontSize:30,fontWeight:"bold"}]}>
                             Have a Nice Day
