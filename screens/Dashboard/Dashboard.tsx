@@ -48,25 +48,25 @@ export default function Dashboard({navigation, route}) {
                         <Text style={[styles.white,{position:"absolute",top:40, fontSize:30}]}>
                             Welcome {user}
                         </Text>
-                        <Text style={[styles.white,{position:"absolute",top:80, fontSize:20,fontWeight:"bold"}]}>
-                            {time.getDate() +"th"} { monthNames[time.getMonth()]}, {time.getFullYear()}
+                        <Text style={[styles.white,{position:"absolute",top:80, fontSize:30,fontWeight:"bold"}]}>
+                              {time.getDate() +"th"} { monthNames[time.getMonth()]}, {time.getFullYear()}
                         </Text>
-                        <Text style={[styles.white,{position:"absolute",top:110, fontSize:20,fontWeight:"bold"}]}>
+                        <Text style={[styles.white,{position:"absolute",top:125, fontSize:30,fontWeight:"bold"}]}>
                             {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
                         </Text>
-                        <Text style={[styles.white,{position:"relative",top:160, fontSize:60,fontWeight:"bold",fontStyle:'italic'}]}>{location}</Text>
-                        <Text style={[styles.white,{position:"relative",top:200, fontSize:120,fontWeight:"bold",fontStyle:'italic'}]}>
-                            {temperature}&#176;C
+                        <Text style={[styles.white,{position:"relative",top:160, fontSize:60,fontWeight:"bold",fontStyle:'italic'}]}> {location}</Text>
+                        <Text style={[styles.white,{position:"relative",top:170, fontSize:200,fontWeight:"bold",fontStyle:'italic'}]}>
+                            {temperature}&#176;
                         </Text>
 
                         <Text style={[styles.white,{position:"absolute",top:height - 100, fontSize:40,fontWeight:"bold"}]}>
-                            Have a Nice Day
+                            Have a Nice Day !!
                         </Text>
                     </View>)}
-            <View style={{position:"absolute",bottom:40, right:"40%",opacity:0.88}}>
+            <View style={{position:"absolute",bottom:40, right:width/2-100,opacity:0.88}}>
                 <TouchableOpacity style={{
                     backgroundColor: "white",
-                    width: 100,
+                    width: 200,
                     height: 40,
                     justifyContent: "center",
                     alignItems: "center",
@@ -76,7 +76,7 @@ export default function Dashboard({navigation, route}) {
                     navigation.pop();
 
                 }}>
-                    <Text style={{fontWeight:"bold"}}>Logout</Text>
+                    <Text style={{fontWeight:"bold",fontSize:20}}>Logout</Text>
                 </TouchableOpacity>
             </View>
             <StatusBar style={"light"}/>
