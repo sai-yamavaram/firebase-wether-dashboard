@@ -49,7 +49,6 @@ export default function LoginScreen({navigation}) {
                 alignItems: "center",
             }}
                               onPress={() => {
-                                  console.log(emailValidationError, passwordValidationError);
                                   if ((emailValidationError || passwordValidationError)) {
                                       ShowValidationToast('Email/Password are not in Valid format')
                                   } else {
