@@ -35,7 +35,7 @@ export default function LoginScreen({navigation}) {
                          }}
                          placeholder={"Eg. exampleemail@company.com"} keyboard={"email-address"}/>
             <CustomInput label={"Password"} type={"password"}
-                         // secureTextEntry={true} placeholder={"Eg. Password@123"}
+                         secureTextEntry={true} placeholder={"Eg. Password@123"}
                          updateContext={(value: string, hasError: boolean) => {
                              setPassword(value);
                              setPasswordValidationError(hasError);

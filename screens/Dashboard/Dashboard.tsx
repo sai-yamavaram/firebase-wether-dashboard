@@ -15,6 +15,8 @@ export default function Dashboard({navigation, route}) {
     const {user} = route.params;
     console.log("dashboard user", user)
     const [response, setResponse] = useState(null);
+    var temperature = 16;
+    var location = "Mumbai";
     const time  = new Date();
     useEffect(() => {
         try {
@@ -34,13 +36,6 @@ export default function Dashboard({navigation, route}) {
 
 
     }, [])
-    // useEffect(() => {
-    //     let secTimer = setInterval(() => {
-    //         setTime(new Date().toLocaleString())
-    //     }, 1000)
-    //
-    //     return () => clearInterval(secTimer);
-    // }, [])
 
     return (
         <View style={{flex: 1,}}>
@@ -59,11 +54,16 @@ export default function Dashboard({navigation, route}) {
                         <Text style={[styles.white,{position:"absolute",top:110, fontSize:20,fontWeight:"bold"}]}>
                             {time.getHours()}:{time.getMinutes()}:{time.getSeconds()}
                         </Text>
-                        <Text style={[styles.white,{position:"absolute",top:height - 100, fontSize:30,fontWeight:"bold"}]}>
+                        <Text style={[styles.white,{position:"relative",top:160, fontSize:60,fontWeight:"bold",fontStyle:'italic'}]}>{location}</Text>
+                        <Text style={[styles.white,{position:"relative",top:200, fontSize:120,fontWeight:"bold",fontStyle:'italic'}]}>
+                            {temperature}&#176;C
+                        </Text>
+
+                        <Text style={[styles.white,{position:"absolute",top:height - 100, fontSize:40,fontWeight:"bold"}]}>
                             Have a Nice Day
                         </Text>
                     </View>)}
-            <View style={{position:"absolute",bottom:40, right:"40%",opacity:0.8}}>
+            <View style={{position:"absolute",bottom:40, right:"40%",opacity:0.88}}>
                 <TouchableOpacity style={{
                     backgroundColor: "white",
                     width: 100,
