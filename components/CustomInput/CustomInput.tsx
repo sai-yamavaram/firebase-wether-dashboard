@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
 import {StyleSheet, TextInput, Text} from "react-native";
 import {validateEmail, validatePassword} from "../../HelperFunctions/Validations";
+
 export type  InputProps = {
     type?: string,
     label: string,
     mode?: "outlined" | "flat" | undefined,
     keyboard?: "default" | "email-address" | "numeric" | "phone-pad" | "number-pad" | "decimal-pad" | "visible-password" | "ascii-capable" | "numbers-and-punctuation" | "url" | "name-phone-pad" | "twitter" | "web-search" | 'undefined',
     placeholder?: string,
-    updateUser?:(value: string, hasError: boolean)=>void,
+    updateContext?: (value: string, hasError: boolean) => void,
     otherProps?: JSON | undefined,
 };
 
@@ -24,7 +25,7 @@ const CustomInput = ({
     const [input, setInput] = useState('');
     const inputRef = useRef(null);
     const errorRef = useRef(null);
-    const [hasError,setHasError] = useState(true);
+    const [hasError, setHasError] = useState(true);
     const styles = StyleSheet.create({
             input: {
                 height: 45,
@@ -52,13 +53,12 @@ const CustomInput = ({
                 style={styles.input}
                 onChangeText={(text) => {
                     if (type === "email") {
-                        if(text.length===0){
+                        if (text.length === 0) {
                             // @ts-ignore
                             inputRef.current.setNativeProps({style: {borderColor: "#6200ee"}});
                             // @ts-ignore
                             setHasError(true)
-                        }
-                        else if (!validateEmail(text)) {
+                        } else if (!validateEmail(text)) {
                             // @ts-ignore
                             inputRef.current.setNativeProps({style: {borderColor: "red"}});
                             // @ts-ignore
@@ -71,36 +71,33 @@ const CustomInput = ({
 
                         }
 
-                    }
-                    else if(type==="password")
-                    {
+                    } else if (type === "password") {
 
-                            if(text.length===0){
-                                // @ts-ignore
-                                inputRef.current.setNativeProps({style: {borderColor: "#6200ee"}});
-                                // @ts-ignore
-                                errorRef.current.setNativeProps({style: {opacity: 0}});
-                                setHasError(true)
+                        if (text.length === 0) {
+                            // @ts-ignore
+                            inputRef.current.setNativeProps({style: {borderColor: "#6200ee"}});
+                            // @ts-ignore
+                            errorRef.current.setNativeProps({style: {opacity: 0}});
+                            setHasError(true)
 
-                            }
-                            else if(!validatePassword(text)) {
-                                // @ts-ignore
-                                inputRef.current.setNativeProps({style: {borderColor: "red"}});
-                                // @ts-ignore
-                                errorRef.current.setNativeProps({style: {opacity: 1}});
-                                setHasError(true)
-                            } else {
-                                // @ts-ignore
-                                inputRef.current.setNativeProps({style: {borderColor: "green"}});
-                                // @ts-ignore
-                                errorRef.current.setNativeProps({style: {opacity: 0}});
-                                setHasError(false)
+                        } else if (!validatePassword(text)) {
+                            // @ts-ignore
+                            inputRef.current.setNativeProps({style: {borderColor: "red"}});
+                            // @ts-ignore
+                            errorRef.current.setNativeProps({style: {opacity: 1}});
+                            setHasError(true)
+                        } else {
+                            // @ts-ignore
+                            inputRef.current.setNativeProps({style: {borderColor: "green"}});
+                            // @ts-ignore
+                            errorRef.current.setNativeProps({style: {opacity: 0}});
+                            setHasError(false)
 
-                            }
+                        }
                     }
                     setInput(text);
                     if (updateContext) {
-                        updateContext(text,hasError)
+                        updateContext(text, hasError)
                     }
                 }}
                 placeholderTextColor="#dbcdf7"
@@ -110,8 +107,15 @@ const CustomInput = ({
                 {...otherProps}
             />
             {
-                (type === "password")?
-                <Text ref={errorRef} style={{color:'red',fontWeight:"bold", opacity:0,fontSize:12,marginHorizontal:16,marginBottom:8}}>Password must contain uppercase, lowercase & special characters</Text>:<></>
+                (type === "password") ?
+                    <Text ref={errorRef} style={{
+                        color: 'red',
+                        fontWeight: "bold",
+                        opacity: 0,
+                        fontSize: 12,
+                        marginHorizontal: 16,
+                        marginBottom: 8
+                    }}>Password must have min 8 char with uppercase, lowercase & contain special char </Text> : <></>
             }
         </>
     )

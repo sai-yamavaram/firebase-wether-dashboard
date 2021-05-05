@@ -1,19 +1,19 @@
 import {StatusBar} from 'expo-status-bar';
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, TouchableOpacity, Text, View, Image, ToastAndroid} from 'react-native';
 import CustomInput from "../../components/CustomInput/CustomInput";
-import {UserContext} from "../../App";
 import Firebase from "../../firebase/init";
 
-export default function LoginScreen() {
-    const {user,updateUser} = useContext(UserContext);
-    // var email = "";
-    const [email,setEmail]= useState('');
-    const [password,setPassword] = useState('');
-    const [emailValidationError,setEmailValidationError] = useState(false);
-    const [passwordValidationError,setPasswordValidationError] = useState(false);
+// @ts-ignore
+export default function LoginScreen({navigation}) {
 
-    const ShowValidationToast = (message)=>{
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [emailValidationError, setEmailValidationError] = useState(false);
+    const [passwordValidationError, setPasswordValidationError] = useState(false);
+
+    // @ts-ignore
+    const ShowValidationToast = (message) => {
         ToastAndroid.showWithGravityAndOffset(
             message,
             ToastAndroid.LONG,
@@ -23,20 +23,23 @@ export default function LoginScreen() {
         );
     }
 
+
     return (
         <View style={styles.container}>
             <Image style={{resizeMode: "contain", width: "100%", marginBottom: -100}}
                    source={require('../../assets/custom/cats.png')}/>
-            <CustomInput label={"Email"} type={"email"} textContentType={"emailAddress"} updateContext={(value:string,hasError:boolean)=> {
-                setEmail(value);
-                setEmailValidationError (hasError)
-            }}
+            <CustomInput label={"Email"} type={"email"} textContentType={"emailAddress"}
+                         updateContext={(value: string, hasError: boolean) => {
+                             setEmail(value);
+                             setEmailValidationError(hasError)
+                         }}
                          placeholder={"Eg. exampleemail@company.com"} keyboard={"email-address"}/>
-            <CustomInput label={"Password"} type={"password"} secureTextEntry={true} placeholder={"Eg. Password@123"} updateContext={(value:string,hasError:boolean)=> {
-                setPassword(value);
-                setPasswordValidationError( hasError);
-                // console.warn(password)
-            }} />
+            <CustomInput label={"Password"} type={"password"}
+                         // secureTextEntry={true} placeholder={"Eg. Password@123"}
+                         updateContext={(value: string, hasError: boolean) => {
+                             setPassword(value);
+                             setPasswordValidationError(hasError);
+                         }}/>
             <TouchableOpacity style={{
                 height: 50,
                 marginHorizontal: 12,
@@ -45,91 +48,42 @@ export default function LoginScreen() {
                 justifyContent: "center",
                 alignItems: "center",
             }}
-            onPress={() => {
-                console.log(emailValidationError,passwordValidationError);
-                if((emailValidationError || passwordValidationError)==true  )
-                {
-                    ShowValidationToast('Email/Password are not in Valid format')
-                }
-                else{
-                    try {
+                              onPress={() => {
+                                  console.log(emailValidationError, passwordValidationError);
+                                  if ((emailValidationError || passwordValidationError)) {
+                                      ShowValidationToast('Email/Password are not in Valid format')
+                                  } else {
+                                      try {
 
-                        Firebase.auth().signInWithEmailAndPassword(email, password)
-                            .then((userCredentials)=> {
-                                ShowValidationToast("Success")
-                                updateUser(userCredentials.user)
-                                console.log(user);
-                            })
-                            .catch((error) => {
-                                var errorCode = error.code;
-                                var errorMessage = error.message;
-                                if(errorCode.trim()==="auth/user-not-found")
-                                {
-                                    Firebase.auth().createUserWithEmailAndPassword(email, password)
-                                        .then((userCredentials)=> {
-                                            ShowValidationToast("Success")
-                                            updateUser(userCredentials.user)
-                                            console.log(user);
-                                        })
-                                }
-                                console.log(errorMessage,errorCode)
-                            })
-                    }
-                    catch (e) {
-                        console.log(e)
-                    }
-                }
-              }}
+                                          Firebase.auth().signInWithEmailAndPassword(email, password)
+                                              .then(() => {
+                                                  ShowValidationToast("Success")
+
+                                                  navigation.navigate('Dashboard', {user: email})
+
+                                              })
+                                              .catch((error) => {
+                                                  let errorCode = error.code;
+                                                  if (errorCode.trim() === "auth/user-not-found") {
+                                                      Firebase.auth().createUserWithEmailAndPassword(email, password)
+                                                          .then((userCredentials) => {
+                                                              ShowValidationToast("Success")
+                                                              navigation.navigate('Dashboard', {user: email})
+
+                                                          })
+                                                  } else {
+                                                      ShowValidationToast(errorCode)
+                                                  }
+                                              })
+                                      } catch (e) {
+                                          ShowValidationToast(e.code)
+                                      }
+                                  }
+                              }}
             >
                 <Text style={{color: "white"}}>Login</Text>
             </TouchableOpacity>
-            {/*<TouchableOpacity style={{*/}
-            {/*    height: 50,*/}
-            {/*    borderWidth:2,*/}
-            {/*    marginTop:5,*/}
-            {/*    marginHorizontal: 12,*/}
-            {/*    borderColor: "#6200ee",*/}
-            {/*    borderRadius: 8,*/}
-            {/*    justifyContent: "center",*/}
-            {/*    alignItems: "center",*/}
-            {/*}}*/}
-            {/*  onPress={() => {*/}
-            {/*      console.log(emailValidationError,passwordValidationError);*/}
-            {/*      if(emailValidationError || passwordValidationError  )*/}
-            {/*      {*/}
-            {/*          ShowValidationToast('Email/Password are not in Valid format')*/}
-            {/*      }*/}
-            {/*      else{*/}
-            {/*          try {*/}
 
-            {/*              Firebase.auth().createUserWithEmailAndPassword(email, password)*/}
-            {/*                  .then((userCredential) => {*/}
-            {/*                      updateUser( userCredential.user);*/}
-            {/*                      ShowValidationToast("Success")*/}
-            {/*                  })*/}
-            {/*                  .catch((error) => {*/}
-            {/*                      var errorCode = error.code;*/}
-            {/*                      var errorMessage = error.message;*/}
-            {/*                      if(errorCode.trim()==="auth/email-already-in-use")*/}
-            {/*                      {*/}
-            {/*                          Firebase.auth().signInWithEmailAndPassword(email, password)*/}
-            {/*                              .then((userCredentials)=> {*/}
-            {/*                                  ShowValidationToast("Success")*/}
-            {/*                                  updateUser(userCredentials.user)*/}
-            {/*                                  console.log(user);*/}
-            {/*                              })*/}
-            {/*                      }*/}
-            {/*                          console.log(errorMessage,errorCode)*/}
-            {/*                  })*/}
-            {/*          }*/}
-            {/*          catch (e) {*/}
-            {/*              console.log(e)*/}
-            {/*          }*/}
-            {/*      }*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*    <Text style={{color: "#6200ee"}}>Signup</Text>*/}
-            {/*</TouchableOpacity>*/}
             <StatusBar style="auto"/>
         </View>
     );
